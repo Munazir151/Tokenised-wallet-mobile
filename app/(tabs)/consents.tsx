@@ -360,14 +360,16 @@ export default function ConsentsScreen() {
           ))
         )}
         <View className="h-6" />
+        </View>
+      </ScrollView>
 
-    {/* Expiry Selection Modal */}
-    <Modal
-      visible={showExpiryModal}
-      animationType="slide"
-      transparent={true}
-      onRequestClose={() => setShowExpiryModal(false)}
-    >
+      {/* Expiry Selection Modal */}
+      <Modal
+        visible={showExpiryModal}
+        animationType="slide"
+        transparent={true}
+        onRequestClose={() => setShowExpiryModal(false)}
+      >
       <View className="flex-1 bg-black/50 justify-end">
         <View className="bg-white rounded-t-3xl p-6">
           <View className="items-center mb-4">

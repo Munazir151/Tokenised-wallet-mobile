@@ -435,19 +435,29 @@ export default function DocumentsScreen() {
         {/* Upload New Document Button */}
         <TouchableOpacity
           onPress={() => setShowUploadModal(true)}
-          className="bg-blue-600 rounded-xl p-4 mb-6 flex-row items-center justify-center shadow-sm"
+          className="bg-white rounded-2xl p-5 mb-6 flex-row items-center justify-center shadow-md border border-gray-100"
+          activeOpacity={0.7}
+          style={{
+            shadowColor: '#059669',
+            shadowOffset: { width: 0, height: 4 },
+            shadowOpacity: 0.15,
+            shadowRadius: 12,
+            elevation: 6,
+          }}
         >
-          <Ionicons name="cloud-upload-outline" size={24} color="white" />
-          <Text className="text-white font-semibold text-lg ml-2">Upload New Document</Text>
+          <View className="w-12 h-12 bg-green-100 rounded-xl items-center justify-center">
+            <Ionicons name="cloud-upload" size={24} color="#059669" />
+          </View>
+          <Text className="text-green-700 font-bold text-base ml-3">Upload New Document</Text>
         </TouchableOpacity>
 
         {/* Uploaded Documents List */}
         {documents.length > 0 && (
           <>
             <View className="flex-row items-center justify-between mb-4">
-              <Text className="text-lg font-bold text-gray-800">My Uploads</Text>
-              <View className="bg-blue-100 px-3 py-1 rounded-full">
-                <Text className="text-blue-800 text-xs font-bold">{documents.length}</Text>
+              <Text className="text-gray-900 text-lg font-bold">My Uploads</Text>
+              <View className="bg-green-100 px-3 py-1.5 rounded-full">
+                <Text className="text-green-700 text-xs font-bold">{documents.length}</Text>
               </View>
             </View>
             {documents.map((doc) => {
@@ -456,29 +466,33 @@ export default function DocumentsScreen() {
                 <TouchableOpacity
                   key={doc.id}
                   onPress={() => setSelectedImage(doc.file_url)}
-                  className="bg-white rounded-2xl p-4 mb-3 flex-row items-center border border-gray-100"
+                  className="bg-white rounded-2xl p-5 mb-4 flex-row items-center border border-gray-100"
+                  activeOpacity={0.7}
                   style={{
-                    shadowColor: '#1e3a8a',
+                    shadowColor: '#000',
                     shadowOffset: { width: 0, height: 2 },
-                    shadowOpacity: 0.06,
-                    shadowRadius: 8,
+                    shadowOpacity: 0.08,
+                    shadowRadius: 12,
                     elevation: 3,
                   }}
                 >
                   <Image
                     source={{ uri: doc.file_url }}
-                    style={{ width: 70, height: 70, borderRadius: 12, backgroundColor: '#f1f5f9' }}
+                    style={{ width: 80, height: 80, borderRadius: 16, backgroundColor: '#f1f5f9' }}
                     resizeMode="cover"
                   />
                   <View className="flex-1 ml-4">
-                    <Text className="text-gray-800 font-bold text-base">{docInfo.name}</Text>
-                    <Text className="text-gray-400 text-xs mt-1">
-                      {new Date(doc.created_at).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })}
-                    </Text>
-                    <View className="mt-2">{getStatusBadge(doc)}</View>
+                    <Text className="text-gray-900 font-bold text-base">{docInfo.name}</Text>
+                    <View className="flex-row items-center mt-1.5">
+                      <Ionicons name="time-outline" size={12} color="#9ca3af" />
+                      <Text className="text-gray-400 text-xs ml-1">
+                        {new Date(doc.created_at).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })}
+                      </Text>
+                    </View>
+                    <View className="mt-2.5">{getStatusBadge(doc)}</View>
                   </View>
-                  <View className="bg-blue-50 p-2.5 rounded-xl">
-                    <Ionicons name="eye-outline" size={20} color="#1e40af" />
+                  <View className="bg-green-50 p-3 rounded-xl">
+                    <Ionicons name="eye" size={20} color="#059669" />
                   </View>
                 </TouchableOpacity>
               );
@@ -486,7 +500,7 @@ export default function DocumentsScreen() {
           </>
         )}
 
-        <View className="h-8" />
+        <View className="h-6" />
       </ScrollView>
 
       {/* Upload Modal */}
@@ -499,13 +513,18 @@ export default function DocumentsScreen() {
         <TouchableOpacity
           activeOpacity={1}
           onPress={() => setShowUploadModal(false)}
-          className="flex-1 bg-black/50 justify-end"
+          className="flex-1 bg-black/60 justify-end"
         >
-          <View className="bg-white rounded-t-3xl p-6">
-            <View className="w-12 h-1 bg-slate-200 rounded-full self-center mb-4" />
-            <Text className="text-xl font-bold text-slate-800 mb-2">Select Document Type</Text>
-            <Text className="text-slate-500 text-sm mb-4">Choose the type of document you want to upload</Text>
-            <ScrollView className="max-h-96" showsVerticalScrollIndicator={false}>
+          <View className="bg-white rounded-t-3xl pt-2 pb-8 px-6">
+            <View className="w-12 h-1.5 bg-gray-300 rounded-full self-center mb-6" />
+            <View className="items-center mb-6">
+              <View className="w-16 h-16 bg-green-100 rounded-full items-center justify-center mb-4">
+                <Ionicons name="document-attach" size={32} color="#059669" />
+              </View>
+              <Text className="text-gray-900 font-bold text-2xl">Select Document Type</Text>
+              <Text className="text-gray-500 text-sm mt-2">Choose the type of document you want to upload</Text>
+            </View>
+            <ScrollView className="max-h-96 mb-4" showsVerticalScrollIndicator={false}>
               {DOCUMENT_TYPES.map((docType) => {
                 const isUploaded = isDocumentUploaded(docType.type);
                 return (
@@ -515,18 +534,26 @@ export default function DocumentsScreen() {
                       setShowUploadModal(false);
                       showUploadOptions(docType.type, docType.name);
                     }}
-                    className="flex-row items-center p-4 mb-2 bg-slate-50 rounded-xl"
+                    className="flex-row items-center p-4 mb-3 bg-gray-50 rounded-2xl border border-gray-100"
+                    activeOpacity={0.7}
+                    style={{
+                      shadowColor: '#000',
+                      shadowOffset: { width: 0, height: 1 },
+                      shadowOpacity: 0.04,
+                      shadowRadius: 4,
+                      elevation: 1,
+                    }}
                   >
                     <View
-                      className="w-11 h-11 rounded-xl items-center justify-center"
-                      style={{ backgroundColor: `${docType.color}20` }}
+                      className="w-12 h-12 rounded-xl items-center justify-center"
+                      style={{ backgroundColor: `${docType.color}15` }}
                     >
-                      <Ionicons name={docType.icon as any} size={22} color={docType.color} />
+                      <Ionicons name={docType.icon as any} size={24} color={docType.color} />
                     </View>
-                    <Text className="flex-1 ml-4 text-slate-700 font-semibold">{docType.name}</Text>
+                    <Text className="flex-1 ml-4 text-gray-800 font-bold text-base">{docType.name}</Text>
                     {isUploaded ? (
-                      <View className="bg-green-100 px-2.5 py-1 rounded-full">
-                        <Text className="text-green-700 text-xs font-medium">Uploaded</Text>
+                      <View className="bg-green-100 px-3 py-1.5 rounded-full">
+                        <Text className="text-green-700 text-xs font-bold">✓ Uploaded</Text>
                       </View>
                     ) : (
                       <Ionicons name="add-circle-outline" size={22} color={docType.color} />
@@ -537,9 +564,17 @@ export default function DocumentsScreen() {
             </ScrollView>
             <TouchableOpacity
               onPress={() => setShowUploadModal(false)}
-              className="bg-slate-100 rounded-xl p-4 mt-4 items-center"
+              className="bg-gray-100 rounded-2xl py-4 items-center"
+              style={{
+                shadowColor: '#000',
+                shadowOffset: { width: 0, height: 1 },
+                shadowOpacity: 0.05,
+                shadowRadius: 2,
+                elevation: 1,
+              }}
+              activeOpacity={0.7}
             >
-              <Text className="text-slate-600 font-semibold">Cancel</Text>
+              <Text className="text-gray-700 font-bold text-base">Close</Text>
             </TouchableOpacity>
           </View>
         </TouchableOpacity>

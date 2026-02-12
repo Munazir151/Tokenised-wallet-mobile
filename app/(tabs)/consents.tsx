@@ -234,59 +234,80 @@ export default function ConsentsScreen() {
   }
 
   return (
-    <SafeAreaView className="flex-1 bg-gray-100" edges={['top']}>
+    <SafeAreaView className="flex-1 bg-blue-800" edges={['top']}>
       <ScrollView
-        className="flex-1 bg-gray-100"
+        className="flex-1 bg-gray-50"
         refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
+        showsVerticalScrollIndicator={false}
       >
-        <View className="px-4 py-6">
-          {/* Header */}
-          <View className="mb-4">
-            <Text className="text-lg font-bold text-gray-800">Pending Requests ({consents.length})</Text>
-            <Text className="text-gray-500 text-sm">Consent requests waiting for your approval</Text>
+        {/* Header Section */}
+        <View className="bg-blue-800 px-6 pt-4 pb-16">
+          <View className="flex-row items-center mb-2">
+            <View className="w-10 h-10 bg-orange-500 rounded-xl items-center justify-center">
+              <Ionicons name="shield-checkmark" size={22} color="#ffffff" />
+            </View>
+            <Text className="text-white text-2xl font-bold ml-3">Consents</Text>
           </View>
-
-          <Text className="text-gray-600 mb-4">
-            Review and manage consent requests from third parties
+          <Text className="text-blue-200 text-sm">
+            {consents.length} pending {consents.length === 1 ? 'request' : 'requests'}
           </Text>
+        </View>
+
+        {/* Content - Overlapping Header */}
+        <View className="px-4 -mt-8">
 
         {consents.length === 0 ? (
-          <View className="flex-1 items-center justify-center py-24">
-            <Ionicons name="shield-checkmark-outline" size={64} color="#9ca3af" />
-            <Text className="text-gray-500 text-lg mt-4">No pending requests</Text>
-            <Text className="text-gray-400 text-sm mt-1 text-center">
+          <View className="bg-white rounded-2xl p-12 items-center shadow-sm">
+            <View className="w-20 h-20 bg-orange-100 rounded-full items-center justify-center mb-4">
+              <Ionicons name="shield-checkmark-outline" size={40} color="#f97316" />
+            </View>
+            <Text className="text-gray-700 text-lg font-semibold">No Pending Requests</Text>
+            <Text className="text-gray-400 text-sm mt-2 text-center">
               You'll see consent requests here when organizations request access
             </Text>
           </View>
         ) : (
           consents.map((consent) => (
-            <View key={consent.id} className="bg-white rounded-xl p-4 mb-3 shadow-sm">
-              <View className="flex-row items-start justify-between mb-3">
+            <View 
+              key={consent.id} 
+              className="bg-white rounded-2xl p-5 mb-4 border border-gray-100"
+              style={{
+                shadowColor: '#000',
+                shadowOffset: { width: 0, height: 2 },
+                shadowOpacity: 0.08,
+                shadowRadius: 12,
+                elevation: 3,
+              }}
+            >
+              <View className="flex-row items-start justify-between mb-4">
                 <View className="flex-1">
                   <View className="flex-row items-center">
-                    <View className="w-10 h-10 bg-orange-100 rounded-full items-center justify-center">
-                      <Ionicons name="business" size={20} color="#f97316" />
+                    <View className="w-12 h-12 bg-orange-100 rounded-xl items-center justify-center">
+                      <Ionicons name="business" size={24} color="#f97316" />
                     </View>
-                    <View className="ml-3">
-                      <Text className="font-semibold text-gray-800">{consent.requester}</Text>
-                      <Text className="text-gray-400 text-xs">{formatDate(consent.created_at)}</Text>
+                    <View className="ml-3 flex-1">
+                      <Text className="font-bold text-gray-900 text-base">{consent.requester}</Text>
+                      <View className="flex-row items-center mt-1">
+                        <Ionicons name="time-outline" size={12} color="#9ca3af" />
+                        <Text className="text-gray-400 text-xs ml-1">{formatDate(consent.created_at)}</Text>
+                      </View>
                     </View>
                   </View>
                 </View>
-                <View className="bg-orange-100 px-3 py-1 rounded-full">
-                  <Text className="text-orange-800 text-xs font-medium">PENDING</Text>
+                <View className="bg-orange-100 px-3 py-1.5 rounded-full">
+                  <Text className="text-orange-700 text-xs font-bold">● PENDING</Text>
                 </View>
               </View>
 
-              <View className="bg-gray-50 rounded-lg p-3 mb-4">
-                <Text className="text-gray-600 text-sm font-medium mb-2">Requested Fields:</Text>
+              <View className="bg-gray-50 rounded-xl p-4 mb-4">
+                <Text className="text-gray-700 text-sm font-bold mb-3">Requested Fields:</Text>
                 <View className="flex-row flex-wrap">
                   {consent.requested_fields.map((field, index) => (
                     <View
                       key={index}
-                      className="bg-blue-100 px-3 py-1 rounded-full mr-2 mb-2"
+                      className="bg-blue-100 px-3 py-1.5 rounded-full mr-2 mb-2"
                     >
-                      <Text className="text-blue-800 text-xs font-medium capitalize">{field}</Text>
+                      <Text className="text-blue-700 text-xs font-semibold capitalize">{field}</Text>
                     </View>
                   ))}
                 </View>
@@ -294,35 +315,43 @@ export default function ConsentsScreen() {
 
               <View className="flex-row space-x-3">
                 <TouchableOpacity
-                  className={`flex-1 bg-red-100 rounded-xl py-3 items-center ${
+                  className={`flex-1 bg-red-50 border border-red-200 rounded-xl py-3.5 items-center ${
                     processingId === consent.id ? 'opacity-50' : ''
                   }`}
                   onPress={() => handleReject(consent.id)}
                   disabled={processingId === consent.id}
+                  activeOpacity={0.7}
                 >
                   {processingId === consent.id ? (
                     <ActivityIndicator color="#dc2626" />
                   ) : (
                     <View className="flex-row items-center">
                       <Ionicons name="close-circle" size={20} color="#dc2626" />
-                      <Text className="text-red-600 font-semibold ml-2">Reject</Text>
+                      <Text className="text-red-600 font-bold ml-2">Reject</Text>
                     </View>
                   )}
                 </TouchableOpacity>
-
                 <TouchableOpacity
-                  className={`flex-1 bg-green-500 rounded-xl py-3 items-center ${
+                  className={`flex-1 bg-green-500 rounded-xl py-3.5 items-center ${
                     processingId === consent.id ? 'opacity-50' : ''
                   }`}
                   onPress={() => handleApprove(consent.id)}
                   disabled={processingId === consent.id}
+                  activeOpacity={0.7}
+                  style={{
+                    shadowColor: '#16a34a',
+                    shadowOffset: { width: 0, height: 2 },
+                    shadowOpacity: 0.2,
+                    shadowRadius: 4,
+                    elevation: 3,
+                  }}
                 >
                   {processingId === consent.id ? (
-                    <ActivityIndicator color="#ffffff" />
+                    <ActivityIndicator color=\"#ffffff\" />
                   ) : (
                     <View className="flex-row items-center">
                       <Ionicons name="checkmark-circle" size={20} color="#ffffff" />
-                      <Text className="text-white font-semibold ml-2">Approve</Text>
+                      <Text className=\"text-white font-bold ml-2\">Approve</Text>
                     </View>
                   )}
                 </TouchableOpacity>
@@ -330,8 +359,7 @@ export default function ConsentsScreen() {
             </View>
           ))
         )}
-      </View>
-    </ScrollView>
+        <View className="h-6" />
 
     {/* Expiry Selection Modal */}
     <Modal

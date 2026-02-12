@@ -177,76 +177,118 @@ export default function TokensScreen() {
   }
 
   return (
-    <SafeAreaView className="flex-1 bg-gray-100" edges={['top']}>
+    <SafeAreaView className="flex-1 bg-blue-800" edges={['top']}>
       <ScrollView
-        className="flex-1"
+        className="flex-1 bg-gray-50"
         refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
+        showsVerticalScrollIndicator={false}
       >
-        <View className="px-4 py-6">
+        {/* Header Section */}
+        <View className="bg-blue-800 px-6 pt-4 pb-16">
+          <View className="flex-row items-center mb-2">
+            <View className="w-10 h-10 bg-blue-700 rounded-xl items-center justify-center">
+              <Ionicons name="wallet" size={22} color="#ffffff" />
+            </View>
+            <Text className="text-white text-2xl font-bold ml-3">My Tokens</Text>
+          </View>
+          <Text className="text-blue-200 text-sm">
+            {tokens.length} {tokens.length === 1 ? 'token' : 'tokens'} issued
+          </Text>
+        </View>
 
-          {/* Issue New Token Button - Always visible */}
+        {/* Content - Overlapping Header */}
+        <View className="px-4 -mt-8">
+          {/* Issue New Token Button */}
           <TouchableOpacity
-            className="bg-blue-800 rounded-xl p-4 flex-row items-center justify-center mb-4"
+            className="bg-white rounded-2xl p-5 flex-row items-center justify-center mb-4 shadow-md border border-gray-100"
             onPress={() => setShowIssueModal(true)}
+            style={{
+              shadowColor: '#1e40af',
+              shadowOffset: { width: 0, height: 4 },
+              shadowOpacity: 0.15,
+              shadowRadius: 12,
+              elevation: 6,
+            }}
           >
-            <Ionicons name="add-circle" size={24} color="#ffffff" />
-            <Text className="text-white font-semibold text-lg ml-2">Issue New KYC Token</Text>
+            <View className="w-12 h-12 bg-blue-100 rounded-xl items-center justify-center">
+              <Ionicons name="add-circle" size={24} color="#1e40af" />
+            </View>
+            <Text className="text-blue-800 font-bold text-base ml-3">Issue New KYC Token</Text>
           </TouchableOpacity>
 
           {/* Tokens List */}
           {tokens.length === 0 ? (
-            <View className="flex-1 items-center justify-center py-16">
-              <Ionicons name="wallet-outline" size={64} color="#9ca3af" />
-              <Text className="text-gray-500 text-lg mt-4">No KYC tokens yet</Text>
-              <Text className="text-gray-400 text-sm mt-1 text-center">Tap above to issue your first token</Text>
+            <View className="bg-white rounded-2xl p-12 items-center shadow-sm">
+              <View className="w-20 h-20 bg-gray-100 rounded-full items-center justify-center mb-4">
+                <Ionicons name="wallet-outline" size={40} color="#9ca3af" />
+              </View>
+              <Text className="text-gray-700 text-lg font-semibold">No KYC Tokens Yet</Text>
+              <Text className="text-gray-400 text-sm mt-2 text-center">
+                Tap above to issue your first token
+              </Text>
             </View>
           ) : (
             tokens.map((token) => (
               <TouchableOpacity
                 key={token.id}
-                className="bg-white rounded-xl p-4 mb-3 shadow-sm"
+                className="bg-white rounded-2xl p-5 mb-4 border border-gray-100"
                 onPress={() => router.push(`/token/${token.id}`)}
+                activeOpacity={0.7}
+                style={{
+                  shadowColor: '#000',
+                  shadowOffset: { width: 0, height: 2 },
+                  shadowOpacity: 0.08,
+                  shadowRadius: 12,
+                  elevation: 3,
+                }}
               >
                 <View className="flex-row items-start justify-between">
                   <View className="flex-1">
-                    <View className="flex-row items-center">
-                      <Ionicons name="shield-checkmark" size={20} color="#1e40af" />
-                      <Text className="font-semibold text-gray-800 ml-2">KYC Credential</Text>
+                    <View className="flex-row items-center mb-3">
+                      <View className="w-10 h-10 bg-blue-100 rounded-xl items-center justify-center">
+                        <Ionicons name="shield-checkmark" size={20} color="#1e40af" />
+                      </View>
+                      <Text className="font-bold text-gray-900 text-base ml-3">KYC Credential</Text>
                     </View>
-                    <Text className="text-gray-500 text-sm mt-1">
+                    <Text className="text-gray-600 font-medium text-sm mb-2">
                       {token.token_json?.credentialSubject?.name || 'N/A'}
                     </Text>
-                    <Text className="text-gray-400 text-xs mt-1">
-                      Issued: {formatDate(token.issued_at)}
+                    <View className="flex-row items-center">
+                      <Ionicons name="calendar-outline" size={14} color="#9ca3af" />
+                      <Text className="text-gray-400 text-xs ml-1.5">
+                        Issued: {formatDate(token.issued_at)}
                     </Text>
+                    </View>
                   </View>
                   <View className="items-end">
                     <View
-                      className={`px-3 py-1 rounded-full ${
+                      className={`px-3 py-1.5 rounded-full ${
                         token.status === 'active' ? 'bg-green-100' : 'bg-red-100'
                       }`}
                     >
                       <Text
-                        className={`text-xs font-medium ${
-                          token.status === 'active' ? 'text-green-800' : 'text-red-800'
+                        className={`text-xs font-bold ${
+                          token.status === 'active' ? 'text-green-700' : 'text-red-700'
                         }`}
                       >
-                        {token.status.toUpperCase()}
+                        {token.status === 'active' ? '● Active' : '● Revoked'}
                       </Text>
                     </View>
                     {token.status === 'active' && (
                       <TouchableOpacity
-                        className="mt-2 bg-blue-100 rounded-lg px-2 py-1"
+                        className="mt-3 bg-blue-100 rounded-xl px-3 py-2 flex-row items-center"
                         onPress={() => openQRModal(token)}
+                        activeOpacity={0.7}
                       >
-                        <Ionicons name="qr-code" size={20} color="#1e40af" />
+                        <Ionicons name="qr-code" size={18} color="#1e40af" />
+                        <Text className="text-blue-800 text-xs font-semibold ml-1">QR</Text>
                       </TouchableOpacity>
                     )}
                   </View>
                 </View>
-                <View className="flex-row items-center mt-3 pt-3 border-t border-gray-100">
+                <View className="flex-row items-center mt-4 pt-4 border-t border-gray-100">
                   <Ionicons name="key-outline" size={14} color="#9ca3af" />
-                  <Text className="text-gray-400 text-xs ml-1 flex-1" numberOfLines={1}>
+                  <Text className="text-gray-400 text-xs ml-1.5 flex-1" numberOfLines={1}>
                     {token.id}
                   </Text>
                   <Ionicons name="chevron-forward" size={16} color="#9ca3af" />
@@ -254,6 +296,7 @@ export default function TokensScreen() {
               </TouchableOpacity>
             ))
           )}
+          <View className="h-6" />
         </View>
       </ScrollView>
 

@@ -352,12 +352,17 @@ export default function DocumentsScreen() {
   }
 
   return (
-    <View className="flex-1 bg-gray-50">
+    <SafeAreaView className="flex-1 bg-blue-800" edges={['top']}>
       {/* Header */}
-      <View className="bg-blue-800 pt-14 pb-6 px-5">
-        <Text className="text-white text-2xl font-bold">My Documents</Text>
-        <Text className="text-blue-200 mt-1">
-          Upload and manage your KYC documents
+      <View className="bg-blue-800 px-6 pt-4 pb-16">
+        <View className="flex-row items-center mb-2">
+          <View className="w-10 h-10 bg-green-500 rounded-xl items-center justify-center">
+            <Ionicons name="documents" size={22} color="#ffffff" />
+          </View>
+          <Text className="text-white text-2xl font-bold ml-3">My Documents</Text>
+        </View>
+        <Text className="text-blue-200 text-sm">
+          {documents.length} {documents.length === 1 ? 'document' : 'documents'} uploaded
         </Text>
       </View>
 
@@ -373,31 +378,51 @@ export default function DocumentsScreen() {
       )}
 
       <ScrollView
-        className="flex-1 p-4"
+        className="flex-1 bg-gray-50"
+        contentContainerStyle={{ paddingHorizontal: 16, paddingTop: 0 }}
         refreshControl={
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
         }
+        showsVerticalScrollIndicator={false}
       >
-        {/* Stats Cards */}
-        <View className="flex-row mb-6">
-          <View className="flex-1 bg-white rounded-xl p-4 mr-2 shadow-sm">
+        {/* Stats Cards - Overlapping Header */}
+        <View className="flex-row mb-6 -mt-8">
+          <View 
+            className="flex-1 bg-white rounded-2xl p-5 mr-2"
+            style={{
+              shadowColor: '#000',
+              shadowOffset: { width: 0, height: 2 },
+              shadowOpacity: 0.08,
+              shadowRadius: 12,
+              elevation: 3,
+            }}
+          >
             <View className="flex-row items-center">
-              <View className="w-10 h-10 bg-blue-100 rounded-full items-center justify-center">
-                <Ionicons name="documents" size={20} color="#1e40af" />
+              <View className="w-12 h-12 bg-blue-100 rounded-xl items-center justify-center">
+                <Ionicons name="documents" size={24} color="#1e40af" />
               </View>
               <View className="ml-3">
-                <Text className="text-gray-500 text-xs">Total</Text>
-                <Text className="text-xl font-bold text-gray-800">{documents.length}</Text>
+                <Text className="text-gray-500 text-xs font-medium">Total</Text>
+                <Text className="text-2xl font-bold text-gray-900">{documents.length}</Text>
               </View>
             </View>
           </View>
-          <View className="flex-1 bg-white rounded-xl p-4 ml-2 shadow-sm">
+          <View 
+            className="flex-1 bg-white rounded-2xl p-5 ml-2"
+            style={{
+              shadowColor: '#000',
+              shadowOffset: { width: 0, height: 2 },
+              shadowOpacity: 0.08,
+              shadowRadius: 12,
+              elevation: 3,
+            }}
+          >
             <View className="flex-row items-center">
-              <View className="w-10 h-10 bg-green-100 rounded-full items-center justify-center">
-                <Ionicons name="checkmark-circle" size={20} color="#16a34a" />
+              <View className="w-12 h-12 bg-green-100 rounded-xl items-center justify-center">
+                <Ionicons name="checkmark-circle" size={24} color="#16a34a" />
               </View>
               <View className="ml-3">
-                <Text className="text-gray-500 text-xs">Verified</Text>
+                <Text className="text-gray-500 text-xs font-medium">Verified</Text>
                 <Text className="text-xl font-bold text-gray-800">
                   {documents.filter(d => d.status === 'verified' || d.verification_source).length}
                 </Text>

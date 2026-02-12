@@ -253,10 +253,22 @@ export const getPendingConsents = async () => {
   });
   
   if (!response.ok) {
-    const error = await response.json().catch(() => ({ detail: 'Failed to get pending consents' }));
-    throw new Error(error.detail || 'Failed to get pending consents');
+    // Handle different error types
+    const error = await response.json().catch(() => ({}));
+    const message = error.detail || 'Failed to get pending consents';
+    console.error('Pending consents error:', message, 'Status:', response.status);
+    // Return empty array if endpoint not found
+    if (response.status === 404) {
+      return { consent_requests: [], count: 0 };
+    }
+    throw new Error(message);
   }
-  return response.json();
+  const data = await response.json();
+  // Ensure response has expected structure
+  return {
+    consent_requests: data.consent_requests || [],
+    count: data.count || 0,
+  };
 };
 
 export const approveConsent = async (consentId: string, expiresAt?: string) => {
@@ -268,8 +280,10 @@ export const approveConsent = async (consentId: string, expiresAt?: string) => {
   });
   
   if (!response.ok) {
-    const error = await response.json().catch(() => ({ detail: 'Failed to approve consent' }));
-    throw new Error(error.detail || 'Failed to approve consent');
+    const error = await response.json().catch(() => ({}));
+    const message = error.detail || 'Failed to approve consent';
+    console.error('Approve consent error:', message);
+    throw new Error(message);
   }
   return response.json();
 };
@@ -297,10 +311,20 @@ export const getApprovedConsents = async () => {
   });
   
   if (!response.ok) {
-    const error = await response.json().catch(() => ({ detail: 'Failed to get approved consents' }));
-    throw new Error(error.detail || 'Failed to get approved consents');
+    const error = await response.json().catch(() => ({}));
+    const message = error.detail || 'Failed to get approved consents';
+    console.error('Approved consents error:', message);
+    // Return empty array if endpoint not found
+    if (response.status === 404) {
+      return { consent_requests: [], count: 0 };
+    }
+    throw new Error(message);
   }
-  return response.json();
+  const data = await response.json();
+  return {
+    consent_requests: data.consent_requests || [],
+    count: data.count || 0,
+  };
 };
 
 export const revokeConsent = async (consentId: string) => {
@@ -312,8 +336,10 @@ export const revokeConsent = async (consentId: string) => {
   });
   
   if (!response.ok) {
-    const error = await response.json().catch(() => ({ detail: 'Failed to revoke consent' }));
-    throw new Error(error.detail || 'Failed to revoke consent');
+    const error = await response.json().catch(() => ({}));
+    const message = error.detail || 'Failed to revoke consent';
+    console.error('Revoke consent error:', message);
+    throw new Error(message);
   }
   return response.json();
 };

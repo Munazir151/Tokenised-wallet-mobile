@@ -89,7 +89,7 @@ export default function DashboardScreen() {
         showsVerticalScrollIndicator={false}
       >
         {/* Welcome Section */}
-        <View className="bg-blue-800 px-6 pt-4 pb-16">
+        <View className="bg-blue-800 px-6 pt-4 pb-6">
           <View className="flex-row items-center justify-between mb-4">
             <View>
               <Text className="text-blue-200 text-sm">Welcome back,</Text>
@@ -127,7 +127,7 @@ export default function DashboardScreen() {
         </View>
 
         {/* Stats Grid - Overlapping Cards */}
-        <View className="px-4 -mt-8">
+        <View className="px-4 -mt-12">
           <View className="flex-row mb-3">
             <StatCard
               icon="wallet"

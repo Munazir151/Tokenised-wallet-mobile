@@ -1,0 +1,52 @@
+{
+  "expo": {
+    "name": "Tokenised KYC Wallet",
+    "slug": "tokenised-kyc-wallet",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "automatic",
+    "newArchEnabled": true,
+    "splash": {
+      "image": "./assets/splash-icon.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#1e40af"
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.tokenisedkyc.wallet"
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#1e40af"
+      },
+      "package": "com.tokenisedkyc.wallet"
+    },
+    "web": {
+      "favicon": "./assets/favicon.png",
+      "bundler": "metro"
+    },
+    "scheme": "tokenised-kyc",
+    "plugins": [
+      "expo-router",
+      "expo-secure-store",
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "Allow $(PRODUCT_NAME) to access your photos for KYC document upload.",
+          "cameraPermission": "Allow $(PRODUCT_NAME) to access your camera for KYC document capture."
+        }
+      ],
+      "@react-native-community/datetimepicker"
+    ],
+    "extra": {
+      "supabaseUrl": "https://uewhhyjrresnyoriuszg.supabase.co",
+      "supabaseAnonKey": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVld2hoeWpycmVzbnlvcml1c3pnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjkwMDAyMTUsImV4cCI6MjA4NDU3NjIxNX0.y-vxodpzHMRjF7SpWegAp16yMa0N6fqc4OGlidtsUus",
+      "apiUrl": "https://backend-launch-1.preview.emergentagent.com/api"
+    }
+  }
+}

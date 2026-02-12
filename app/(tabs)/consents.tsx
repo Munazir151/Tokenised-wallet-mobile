@@ -347,11 +347,11 @@ export default function ConsentsScreen() {
                   }}
                 >
                   {processingId === consent.id ? (
-                    <ActivityIndicator color=\"#ffffff\" />
+                    <ActivityIndicator color="#ffffff" />
                   ) : (
                     <View className="flex-row items-center">
                       <Ionicons name="checkmark-circle" size={20} color="#ffffff" />
-                      <Text className=\"text-white font-bold ml-2\">Approve</Text>
+                      <Text className="text-white font-bold ml-2">Approve</Text>
                     </View>
                   )}
                 </TouchableOpacity>

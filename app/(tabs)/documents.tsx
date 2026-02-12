@@ -10,6 +10,7 @@ import {
   RefreshControl,
   Modal,
 } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { useRouter } from 'expo-router';
 import * as ImagePicker from 'expo-image-picker';
 import { manipulateAsync, FlipType, SaveFormat } from 'expo-image-manipulator';
@@ -656,6 +657,6 @@ export default function DocumentsScreen() {
           )}
         </View>
       </Modal>
-    </View>
+    </SafeAreaView>
   );
 }

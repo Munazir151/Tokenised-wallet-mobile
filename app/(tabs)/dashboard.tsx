@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, memo } from 'react';
 import {
   View,
   Text,
@@ -12,6 +12,20 @@ import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 import { useAuth } from '../../context/AuthContext';
 import { getMyTokens, getPendingConsents, getAuditSummary } from '../../services/api';
+
+// StatCard component defined outside to prevent re-renders
+const StatCard = memo(({ icon, label, value, color, onPress }: any) => (
+  <TouchableOpacity
+    className="bg-white rounded-xl p-4 shadow-sm flex-1 mx-1"
+    onPress={onPress}
+  >
+    <View className={`w-10 h-10 rounded-full items-center justify-center mb-2 ${color}`}>
+      <Ionicons name={icon} size={20} color="#ffffff" />
+    </View>
+    <Text className="text-2xl font-bold text-gray-800">{value}</Text>
+    <Text className="text-gray-500 text-sm">{label}</Text>
+  </TouchableOpacity>
+));
 
 export default function DashboardScreen() {
   const { userData } = useAuth();
@@ -58,19 +72,6 @@ export default function DashboardScreen() {
     setRefreshing(true);
     fetchData();
   };
-
-  const StatCard = ({ icon, label, value, color, onPress }: any) => (
-    <TouchableOpacity
-      className="bg-white rounded-xl p-4 shadow-sm flex-1 mx-1"
-      onPress={onPress}
-    >
-      <View className={`w-10 h-10 rounded-full items-center justify-center mb-2 ${color}`}>
-        <Ionicons name={icon} size={20} color="#ffffff" />
-      </View>
-      <Text className="text-2xl font-bold text-gray-800">{value}</Text>
-      <Text className="text-gray-500 text-sm">{label}</Text>
-    </TouchableOpacity>
-  );
 
   if (isLoading) {
     return (

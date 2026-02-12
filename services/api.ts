@@ -217,6 +217,11 @@ export const getMyTokens = async () => {
     method: 'GET',
     headers,
   });
+  
+  if (!response.ok) {
+    const error = await response.json().catch(() => ({ detail: 'Failed to get tokens' }));
+    throw new Error(error.detail || 'Failed to get tokens');
+  }
   return response.json();
 };
 
@@ -246,6 +251,11 @@ export const getPendingConsents = async () => {
     method: 'GET',
     headers,
   });
+  
+  if (!response.ok) {
+    const error = await response.json().catch(() => ({ detail: 'Failed to get pending consents' }));
+    throw new Error(error.detail || 'Failed to get pending consents');
+  }
   return response.json();
 };
 
@@ -256,6 +266,11 @@ export const approveConsent = async (consentId: string, expiresAt?: string) => {
     headers,
     body: JSON.stringify({ consent_id: consentId, expires_at: expiresAt }),
   });
+  
+  if (!response.ok) {
+    const error = await response.json().catch(() => ({ detail: 'Failed to approve consent' }));
+    throw new Error(error.detail || 'Failed to approve consent');
+  }
   return response.json();
 };
 
@@ -266,6 +281,11 @@ export const rejectConsent = async (consentId: string, reason?: string) => {
     headers,
     body: JSON.stringify({ consent_id: consentId, reason }),
   });
+  
+  if (!response.ok) {
+    const error = await response.json().catch(() => ({ detail: 'Failed to reject consent' }));
+    throw new Error(error.detail || 'Failed to reject consent');
+  }
   return response.json();
 };
 
@@ -275,6 +295,11 @@ export const getApprovedConsents = async () => {
     method: 'GET',
     headers,
   });
+  
+  if (!response.ok) {
+    const error = await response.json().catch(() => ({ detail: 'Failed to get approved consents' }));
+    throw new Error(error.detail || 'Failed to get approved consents');
+  }
   return response.json();
 };
 
@@ -285,6 +310,11 @@ export const revokeConsent = async (consentId: string) => {
     headers,
     body: JSON.stringify({ consent_id: consentId }),
   });
+  
+  if (!response.ok) {
+    const error = await response.json().catch(() => ({ detail: 'Failed to revoke consent' }));
+    throw new Error(error.detail || 'Failed to revoke consent');
+  }
   return response.json();
 };
 
@@ -307,5 +337,10 @@ export const getAuditSummary = async () => {
     method: 'GET',
     headers,
   });
+  
+  if (!response.ok) {
+    const error = await response.json().catch(() => ({ detail: 'Failed to get audit summary' }));
+    throw new Error(error.detail || 'Failed to get audit summary');
+  }
   return response.json();
 };
